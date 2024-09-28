@@ -54,8 +54,8 @@
 
 // HEADUPS: Keep that ^^ in sync with README.md
 
-#[cfg(feature = "chan")]
-extern crate chan;
+#[cfg(feature = "crossbeam-channel")]
+extern crate crossbeam_channel;
 
 use std::collections::HashMap;
 use std::collections::hash_map::DefaultHasher;
@@ -938,8 +938,8 @@ mod multiplex {
     use std::marker::PhantomData;
     use std::thread;
 
-    #[cfg(feature = "chan")]
-    use chan;
+    #[cfg(feature = "crossbeam-channel")]
+    use crossbeam_channel;
 
     use super::{LockedReceiver, PipelineConfig, PipelineEntry, Sender};
 
@@ -1010,7 +1010,7 @@ mod multiplex {
             if cfg!(feature = "chan") {
                 // if we're compiled when `chan` support, use that
                 let (chan_tx, chan_rx) =
-                    chan::sync(PipelineConfig::default().buff_size);
+                    crossbeam_channel::bounded(PipelineConfig::default().buff_size);
 
                 for entry in self.entries {
                     let entry_rx = chan_rx.clone();
@@ -1022,7 +1022,7 @@ mod multiplex {
                 }
 
                 for item in rx {
-                    chan_tx.send(item);
+                    let _ = chan_tx.send(item);
                 }
             } else {
                 // if we weren't compiled with `chan` use a Mutex<rx>. workers

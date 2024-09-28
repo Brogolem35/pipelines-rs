@@ -2,6 +2,7 @@
 name = "pipelines"
 version = "0.4.0"
 authors = ["David King <dking@ketralnis.com>"]
+edition = "2021"
 license = "BSD-2-Clause"
 description = "A tool for constructing multi-threaded pipelines of execution"
 repository = "https://github.com/ketralnis/pipelines-rs"
@@ -9,10 +10,10 @@ readme = "README.md"
 keywords = ["pipeline", "pipelines", "parallel", "concurrent", "mapreduce"]
 
 [features]
-default = ["chan"]
+default = ["crossbeam-channel"]
 
 [dependencies]
-chan = {version="0.1.19", optional=true}
+crossbeam-channel = {version = "0.5.13", optional=true}
 
 [dev-dependencies]
 # for examples/compression-tester.rs:
