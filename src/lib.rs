@@ -1007,7 +1007,7 @@ mod multiplex {
             // TODO both of these methods use PipelineConfig::default() to size their internal
             // channel buffers and aren't able to customise them
 
-            if cfg!(feature = "chan") {
+            if cfg!(feature = "crossbeam-channel") {
                 // if we're compiled when `chan` support, use that
                 let (chan_tx, chan_rx) =
                     crossbeam_channel::bounded(PipelineConfig::default().buff_size);
